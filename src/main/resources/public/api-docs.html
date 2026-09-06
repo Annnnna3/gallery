@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API · Art Gallery QA</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">A</span> Art Gallery QA</a>
+    <nav class="nav"><a href="/">Gallery</a><a href="/api-lab">API Lab</a></nav>
+</header>
+<main class="container docs">
+    <p class="eyebrow">REST API</p>
+    <h1 style="font-size:64px">API playground</h1>
+    <p class="notice">Данные хранятся в памяти. POST / PUT / PATCH / DELETE меняют данные до перезапуска приложения. Перезапусти Java-приложение, чтобы вернуть исходное состояние.</p>
+
+    <div class="docs-actions">
+        <a class="btn" href="/api-lab">Open interactive API Lab</a>
+    </div>
+
+    <h2 style="margin-top:42px">Artists</h2>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/artists</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/artists?search=Monet</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/artists/1</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/artists/1/paintings</div>
+    <div class="endpoint"><span class="method method-post">POST</span>/api/artists</div>
+    <div class="endpoint"><span class="method method-put">PUT</span>/api/artists/1</div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span>/api/artists/1</div>
+    <div class="endpoint"><span class="method method-delete">DELETE</span>/api/artists/1</div>
+
+    <h3>Artist POST / PUT body</h3>
+    <pre class="code-block">{
+  "name": "Kazimir Malevich",
+  "birthYear": 1879,
+  "deathYear": 1935,
+  "country": "Ukraine",
+  "movement": "Suprematism",
+  "description": "Avant-garde artist and theorist.",
+  "portrait": "/images/placeholder.svg"
+}</pre>
+    <h3>Artist PATCH body</h3>
+    <pre class="code-block">{
+  "country": "Poland"
+}</pre>
+
+    <h2 style="margin-top:42px">Paintings</h2>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/paintings?page=1&amp;size=6</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/paintings?artistId=1</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/paintings?search=Starry</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/paintings?yearFrom=1880&amp;yearTo=1900</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/paintings?sort=year-desc</div>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/paintings/101</div>
+    <div class="endpoint"><span class="method method-post">POST</span>/api/paintings</div>
+    <div class="endpoint"><span class="method method-put">PUT</span>/api/paintings/101</div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span>/api/paintings/101</div>
+    <div class="endpoint"><span class="method method-delete">DELETE</span>/api/paintings/101</div>
+
+    <h3>Painting POST / PUT body</h3>
+    <pre class="code-block">{
+  "title": "Wheat Field with Cypresses",
+  "artistId": 1,
+  "year": 1889,
+  "genre": "Post-Impressionism",
+  "museum": "The Metropolitan Museum of Art, New York",
+  "description": "A landscape with wheat, cypresses and a turbulent sky.",
+  "image": "/images/placeholder.svg"
+}</pre>
+    <h3>Painting PATCH body</h3>
+    <pre class="code-block">{
+  "museum": "QA Test Museum"
+}</pre>
+
+    <h2 style="margin-top:42px">Expected status codes</h2>
+    <div class="endpoint">200 OK · successful GET / PUT / PATCH</div>
+    <div class="endpoint">201 Created · successful POST</div>
+    <div class="endpoint">204 No Content · successful DELETE / OPTIONS</div>
+    <div class="endpoint">400 Bad Request · invalid JSON, fields or values</div>
+    <div class="endpoint">404 Not Found · resource does not exist</div>
+    <div class="endpoint">405 Method Not Allowed · unsupported method</div>
+    <div class="endpoint">409 Conflict · business/data conflict where applicable</div>
+    <div class="endpoint">415 Unsupported Media Type · write request without application/json</div>
+
+    <h2 style="margin-top:42px">Useful headers</h2>
+    <div class="endpoint">Location · Allow · X-Total-Count · X-Page · X-Page-Size · Content-Type</div>
+
+    <h2 style="margin-top:42px">Health / OPTIONS</h2>
+    <div class="endpoint"><span class="method method-get">GET</span>/api/health</div>
+    <div class="endpoint"><span class="method method-options">OPTIONS</span>/api/paintings</div>
+</main>
+</body>
+</html>

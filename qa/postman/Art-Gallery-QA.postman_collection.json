@@ -1,0 +1,423 @@
+{
+  "info": {
+    "_postman_id": "95254fb1-4c8e-4908-884d-bcf1ca6db5e0",
+    "name": "Art Gallery QA CRUD",
+    "description": "Manual QA collection: GET, POST, PUT, PATCH, DELETE, OPTIONS and negative cases.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "GET",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health"
+          }
+        },
+        {
+          "name": "All artists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/artists"
+          }
+        },
+        {
+          "name": "Artist 1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/artists/1"
+          }
+        },
+        {
+          "name": "Artist 1 paintings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/artists/1/paintings"
+          }
+        },
+        {
+          "name": "Paintings page 1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings?page=1&size=6"
+          }
+        },
+        {
+          "name": "Painting 101",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings/101"
+          }
+        },
+        {
+          "name": "Missing painting",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings/999999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST",
+      "item": [
+        {
+          "name": "Create artist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/artists",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kazimir Malevich\",\n  \"birthYear\": 1879,\n  \"deathYear\": 1935,\n  \"country\": \"Ukraine\",\n  \"movement\": \"Suprematism\",\n  \"description\": \"Avant-garde artist and theorist.\",\n  \"portrait\": \"/images/placeholder.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Duplicate artist name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/artists",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Claude Monet\",\n  \"birthYear\": 1879,\n  \"deathYear\": 1935,\n  \"country\": \"Ukraine\",\n  \"movement\": \"Suprematism\",\n  \"description\": \"Avant-garde artist and theorist.\",\n  \"portrait\": \"/images/placeholder.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create painting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/paintings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"QA Test Painting\",\n  \"artistId\": 1,\n  \"year\": 1889,\n  \"genre\": \"Post-Impressionism\",\n  \"museum\": \"QA Test Museum\",\n  \"description\": \"Painting created for CRUD API testing.\",\n  \"image\": \"/images/placeholder.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create painting with missing artist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/paintings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Orphan QA Painting\",\n  \"artistId\": 999999,\n  \"year\": 1889,\n  \"genre\": \"Post-Impressionism\",\n  \"museum\": \"QA Test Museum\",\n  \"description\": \"Painting created for CRUD API testing.\",\n  \"image\": \"/images/placeholder.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create artist - wrong content type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "url": "{{baseUrl}}/api/artists",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kazimir Malevich\",\n  \"birthYear\": 1879,\n  \"deathYear\": 1935,\n  \"country\": \"Ukraine\",\n  \"movement\": \"Suprematism\",\n  \"description\": \"Avant-garde artist and theorist.\",\n  \"portrait\": \"/images/placeholder.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT",
+      "item": [
+        {
+          "name": "Replace artist 1",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/artists/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Vincent van Gogh\",\n  \"birthYear\": 1853,\n  \"deathYear\": 1890,\n  \"country\": \"Netherlands\",\n  \"movement\": \"Post-Impressionism\",\n  \"description\": \"Updated through PUT for QA testing.\",\n  \"portrait\": \"/images/van-gogh.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Replace painting 101",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/paintings/101",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Starry Night Updated\",\n  \"artistId\": 1,\n  \"year\": 1889,\n  \"genre\": \"Post-Impressionism\",\n  \"museum\": \"Museum of Modern Art, New York\",\n  \"description\": \"Updated through a PUT request.\",\n  \"image\": \"/images/starry-night.svg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "PUT missing required field",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/paintings/101",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Only title\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PATCH",
+      "item": [
+        {
+          "name": "Patch artist country",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/artists/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country\": \"QA Country\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Patch painting museum",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/paintings/101",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"museum\": \"QA Test Museum\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Patch with unknown field",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/paintings/101",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unknownField\": \"test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE",
+      "item": [
+        {
+          "name": "Delete existing painting 603",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings/603"
+          }
+        },
+        {
+          "name": "Delete missing painting",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings/999999"
+          }
+        },
+        {
+          "name": "Delete artist with paintings",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/artists/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "HTTP / Negative",
+      "item": [
+        {
+          "name": "OPTIONS paintings",
+          "request": {
+            "method": "OPTIONS",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings"
+          }
+        },
+        {
+          "name": "Unsupported POST health",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/health",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unsupported DELETE collection",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/paintings"
+          }
+        },
+        {
+          "name": "Invalid JSON",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Broken JSON\",\n}"
+            },
+            "url": "{{baseUrl}}/api/artists"
+          }
+        }
+      ]
+    }
+  ]
+}

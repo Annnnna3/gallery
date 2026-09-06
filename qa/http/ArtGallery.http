@@ -1,0 +1,197 @@
+### Health
+GET http://localhost:8080/api/health
+Accept: application/json
+
+### GET all artists
+GET http://localhost:8080/api/artists
+Accept: application/json
+
+### GET artist by ID
+GET http://localhost:8080/api/artists/1
+Accept: application/json
+
+### GET artist paintings
+GET http://localhost:8080/api/artists/1/paintings
+Accept: application/json
+
+### GET paintings with pagination
+GET http://localhost:8080/api/paintings?page=1&size=6
+Accept: application/json
+
+### GET paintings with filters
+GET http://localhost:8080/api/paintings?artistId=1&yearFrom=1880&yearTo=1900&sort=year-desc&page=1&size=10
+Accept: application/json
+
+### GET painting by ID
+GET http://localhost:8080/api/paintings/101
+Accept: application/json
+
+### GET missing painting - negative case
+GET http://localhost:8080/api/paintings/999999
+Accept: application/json
+
+### POST create artist
+POST http://localhost:8080/api/artists
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Kazimir Malevich",
+  "birthYear": 1879,
+  "deathYear": 1935,
+  "country": "Ukraine",
+  "movement": "Suprematism",
+  "description": "Avant-garde artist and theorist.",
+  "portrait": "/images/placeholder.svg"
+}
+
+### POST duplicate artist - conflict case
+POST http://localhost:8080/api/artists
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Claude Monet",
+  "birthYear": 1840,
+  "deathYear": 1926,
+  "country": "France",
+  "movement": "Impressionism",
+  "description": "Duplicate-name API test.",
+  "portrait": "/images/monet.svg"
+}
+
+### POST create painting
+POST http://localhost:8080/api/paintings
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "QA Test Painting",
+  "artistId": 1,
+  "year": 1889,
+  "genre": "Post-Impressionism",
+  "museum": "QA Test Museum",
+  "description": "Painting created for CRUD API testing.",
+  "image": "/images/placeholder.svg"
+}
+
+### POST painting with non-existing artist - negative case
+POST http://localhost:8080/api/paintings
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Orphan QA Painting",
+  "artistId": 999999,
+  "year": 2020,
+  "genre": "QA",
+  "museum": "QA Museum",
+  "description": "Reference integrity test.",
+  "image": "/images/placeholder.svg"
+}
+
+### PUT full update artist 1
+PUT http://localhost:8080/api/artists/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Vincent van Gogh",
+  "birthYear": 1853,
+  "deathYear": 1890,
+  "country": "Netherlands",
+  "movement": "Post-Impressionism",
+  "description": "Updated through PUT for QA testing.",
+  "portrait": "/images/van-gogh.svg"
+}
+
+### PUT full update painting 101
+PUT http://localhost:8080/api/paintings/101
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "The Starry Night Updated",
+  "artistId": 1,
+  "year": 1889,
+  "genre": "Post-Impressionism",
+  "museum": "Museum of Modern Art, New York",
+  "description": "Updated through a PUT request.",
+  "image": "/images/starry-night.svg"
+}
+
+### PUT missing required fields - negative case
+PUT http://localhost:8080/api/paintings/101
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Only title"
+}
+
+### PATCH one artist field
+PATCH http://localhost:8080/api/artists/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "country": "QA Country"
+}
+
+### PATCH one painting field
+PATCH http://localhost:8080/api/paintings/101
+Content-Type: application/json
+Accept: application/json
+
+{
+  "museum": "QA Test Museum"
+}
+
+### PATCH unknown field - negative case
+PATCH http://localhost:8080/api/paintings/101
+Content-Type: application/json
+Accept: application/json
+
+{
+  "unknownField": "test"
+}
+
+### DELETE existing painting
+DELETE http://localhost:8080/api/paintings/603
+Accept: application/json
+
+### DELETE missing painting - negative case
+DELETE http://localhost:8080/api/paintings/999999
+Accept: application/json
+
+### DELETE artist that still has paintings
+DELETE http://localhost:8080/api/artists/1
+Accept: application/json
+
+### Wrong Content-Type
+POST http://localhost:8080/api/artists
+Content-Type: text/plain
+Accept: application/json
+
+{
+  "name": "Wrong Content Type"
+}
+
+### Invalid JSON
+POST http://localhost:8080/api/artists
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Broken JSON",
+}
+
+### Unsupported method
+POST http://localhost:8080/api/health
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+### OPTIONS
+OPTIONS http://localhost:8080/api/paintings

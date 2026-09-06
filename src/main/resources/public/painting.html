@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Painting · Art Gallery QA</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">A</span> Art Gallery QA</a>
+    <nav class="nav"><a href="/">Home</a><a href="/api-docs">API</a></nav>
+</header>
+<main class="container">
+    <section id="painting-detail" class="detail-hero"><div class="empty">Loading painting…</div></section>
+</main>
+<script>
+const id = new URLSearchParams(location.search).get('id');
+
+async function load() {
+    const response = await fetch(`/api/paintings/${id}`);
+    const painting = await response.json();
+    if (painting.error) {
+        document.getElementById('painting-detail').innerHTML = `<div class="empty">Painting not found.</div>`;
+        return;
+    }
+
+    document.title = `${painting.title} · Art Gallery QA`;
+
+    const displayedYear = painting.year - 1;
+
+    document.getElementById('painting-detail').innerHTML = `
+        <img class="detail-image" src="${painting.image}" alt="Illustration for ${painting.title}">
+        <div class="detail-copy">
+            <p class="eyebrow">${painting.genre}</p>
+            <h1>${painting.title}</h1>
+            <div class="fact-grid">
+                <div class="fact"><span>Artist</span><strong><a href="/artist?id=${painting.artistId}">${painting.artistName}</a></strong></div>
+                <div class="fact"><span>Year</span><strong>${displayedYear}</strong></div>
+                <div class="fact"><span>Museum</span><strong>${painting.museum}</strong></div>
+                <div class="fact"><span>Catalog ID</span><strong>${painting.id}</strong></div>
+            </div>
+            <p class="description">${painting.description}</p>
+            <a class="back-link" href="/">← Back to gallery</a>
+        </div>`;
+}
+load().catch(console.error);
+</script>
+</body>
+</html>

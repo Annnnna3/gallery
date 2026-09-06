@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Art Gallery QA</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">A</span> Art Gallery QA</a>
+    <nav class="nav">
+        <a href="#artists">Artists</a>
+        <a href="#paintings">Paintings</a>
+        <a href="/api-docs">API</a>
+    </nav>
+</header>
+
+<main>
+    <section class="container hero">
+        <div>
+            <p class="eyebrow">Manual QA practice project</p>
+            <h1>Stories behind great artists and their paintings.</h1>
+            <p>Explore a compact collection, use filters and pagination, open artist and painting details — and test everything through the browser and REST API.</p>
+        </div>
+        <div class="hero-art" aria-label="Decorative gallery composition">
+            <div class="hero-label">Curated practice collection · 6 artists · 19 works</div>
+        </div>
+    </section>
+
+    <section id="artists" class="container section">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Artists</p>
+                <h2>Meet the collection</h2>
+            </div>
+            <p id="artist-count">Loading artists…</p>
+        </div>
+        <div class="search-panel">
+            <input id="artist-search" class="input" type="search" placeholder="Search artist by name, e.g. Monet">
+            <button id="artist-search-btn" class="btn">Search artists</button>
+        </div>
+        <div id="artist-grid" class="artist-grid"></div>
+    </section>
+
+    <section id="paintings" class="container section">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Paintings</p>
+                <h2>Browse artworks</h2>
+            </div>
+            <p>Use DevTools → Network while filtering.</p>
+        </div>
+
+        <div class="filters">
+            <div class="field">
+                <label for="painting-search">Title</label>
+                <input id="painting-search" class="input" type="search" placeholder="e.g. Starry">
+            </div>
+            <div class="field">
+                <label for="artist-filter">Artist</label>
+                <select id="artist-filter" class="select"><option value="">All artists</option></select>
+            </div>
+            <div class="field">
+                <label for="year-from">Year from</label>
+                <input id="year-from" class="input" type="number" placeholder="1400">
+            </div>
+            <div class="field">
+                <label for="year-to">Year to</label>
+                <input id="year-to" class="input" type="number" placeholder="2000">
+            </div>
+            <div class="field">
+                <label for="sort">Sort</label>
+                <select id="sort" class="select">
+                    <option value="title-asc">Title A–Z</option>
+                    <option value="title-desc">Title Z–A</option>
+                    <option value="year-asc">Year ↑</option>
+                    <option value="year-desc">Year ↓</option>
+                </select>
+            </div>
+            <button id="apply-filters" class="btn">Apply</button>
+            <button id="reset-filters" class="btn btn-secondary">Reset</button>
+        </div>
+
+        <div class="results-bar">
+            <span id="painting-count">Loading…</span>
+            <label>Per page
+                <select id="page-size" class="select" style="width:auto;height:36px;margin-left:6px">
+                    <option value="3">3</option>
+                    <option value="6" selected>6</option>
+                    <option value="9">9</option>
+                </select>
+            </label>
+        </div>
+
+        <div id="painting-grid" class="painting-grid"></div>
+        <div id="pagination" class="pagination"></div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">Art Gallery QA · intentionally imperfect training application</div>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

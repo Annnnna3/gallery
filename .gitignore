@@ -1,0 +1,8 @@
+out/
+*.log
+.DS_Store
+.idea/
+.vscode/
+
+# Project exclude paths
+/target/

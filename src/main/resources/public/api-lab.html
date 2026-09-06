@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Lab · Art Gallery QA</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">A</span> Art Gallery QA</a>
+    <nav class="nav"><a href="/">Gallery</a><a href="/api-docs">API Docs</a></nav>
+</header>
+<main class="container docs">
+    <p class="eyebrow">Manual QA</p>
+    <h1 style="font-size:64px">API Lab</h1>
+    <p class="notice">Мини-Postman прямо в проекте. Открой DevTools → Network, отправляй запросы и сравнивай Method, URL, Status, Headers, Request Payload и Response.</p>
+
+    <section class="api-lab-grid">
+        <div class="api-lab-panel">
+            <h2>Request</h2>
+            <div class="request-line">
+                <select id="api-method" class="select method-select">
+                    <option>GET</option>
+                    <option>POST</option>
+                    <option>PUT</option>
+                    <option>PATCH</option>
+                    <option>DELETE</option>
+                    <option>OPTIONS</option>
+                </select>
+                <input id="api-path" class="input" value="/api/paintings/101" aria-label="API path">
+                <button id="send-request" class="btn">Send</button>
+            </div>
+
+            <div class="field lab-field">
+                <label for="content-type">Content-Type</label>
+                <select id="content-type" class="select">
+                    <option value="application/json">application/json</option>
+                    <option value="text/plain">text/plain</option>
+                    <option value="">Do not send Content-Type</option>
+                </select>
+            </div>
+
+            <div class="field lab-field">
+                <label for="request-body">Request body</label>
+                <textarea id="request-body" class="lab-textarea" spellcheck="false">{
+  "museum": "QA Test Museum"
+}</textarea>
+            </div>
+
+            <div class="preset-row">
+                <button class="page-btn preset" data-method="GET" data-path="/api/paintings/101" data-body="">GET painting</button>
+                <button class="page-btn preset" data-method="POST" data-path="/api/paintings" data-preset="postPainting">POST painting</button>
+                <button class="page-btn preset" data-method="PUT" data-path="/api/paintings/101" data-preset="putPainting">PUT painting</button>
+                <button class="page-btn preset" data-method="PATCH" data-path="/api/artists/1" data-preset="patchArtist">PATCH artist</button>
+                <button class="page-btn preset" data-method="DELETE" data-path="/api/paintings/603" data-body="">DELETE painting</button>
+            </div>
+        </div>
+
+        <div class="api-lab-panel">
+            <div class="response-heading">
+                <h2>Response</h2>
+                <span id="response-status" class="status-pill">not sent</span>
+            </div>
+            <h3>Headers</h3>
+            <pre id="response-headers" class="code-block small-code">—</pre>
+            <h3>Body</h3>
+            <pre id="response-body" class="code-block response-code">—</pre>
+        </div>
+    </section>
+</main>
+<script>
+const presets = {
+    postPainting: {
+        title: "QA Test Painting",
+        artistId: 1,
+        year: 1889,
+        genre: "Post-Impressionism",
+        museum: "QA Test Museum",
+        description: "Painting created for CRUD API testing.",
+        image: "/images/placeholder.svg"
+    },
+    putPainting: {
+        title: "The Starry Night Updated",
+        artistId: 1,
+        year: 1889,
+        genre: "Post-Impressionism",
+        museum: "Museum of Modern Art, New York",
+        description: "Updated through a PUT request in the QA lab.",
+        image: "/images/starry-night.svg"
+    },
+    patchArtist: {
+        country: "QA Country"
+    }
+};
+
+const methodEl = document.getElementById("api-method");
+const pathEl = document.getElementById("api-path");
+const bodyEl = document.getElementById("request-body");
+const contentTypeEl = document.getElementById("content-type");
+const statusEl = document.getElementById("response-status");
+const headersEl = document.getElementById("response-headers");
+const responseEl = document.getElementById("response-body");
+
+for (const button of document.querySelectorAll(".preset")) {
+    button.addEventListener("click", () => {
+        methodEl.value = button.dataset.method;
+        pathEl.value = button.dataset.path;
+        if (button.dataset.preset) {
+            bodyEl.value = JSON.stringify(presets[button.dataset.preset], null, 2);
+        } else {
+            bodyEl.value = button.dataset.body || "";
+        }
+    });
+}
+
+document.getElementById("send-request").addEventListener("click", async () => {
+    const method = methodEl.value;
+    const path = pathEl.value.trim();
+    const options = { method };
+    const contentType = contentTypeEl.value;
+    if (contentType) options.headers = { "Content-Type": contentType };
+    if (!["GET", "DELETE", "OPTIONS"].includes(method) && bodyEl.value.trim()) {
+        options.body = bodyEl.value;
+    }
+
+    statusEl.textContent = "sending...";
+    headersEl.textContent = "—";
+    responseEl.textContent = "—";
+
+    try {
+        const response = await fetch(path, options);
+        statusEl.textContent = `${response.status} ${response.statusText}`;
+        statusEl.dataset.ok = response.ok ? "true" : "false";
+        headersEl.textContent = [...response.headers.entries()]
+            .map(([name, value]) => `${name}: ${value}`)
+            .join("\n") || "—";
+
+        const text = await response.text();
+        try {
+            responseEl.textContent = text ? JSON.stringify(JSON.parse(text), null, 2) : "<empty body>";
+        } catch {
+            responseEl.textContent = text || "<empty body>";
+        }
+    } catch (error) {
+        statusEl.textContent = "Request failed";
+        statusEl.dataset.ok = "false";
+        responseEl.textContent = String(error);
+    }
+});
+</script>
+</body>
+</html>

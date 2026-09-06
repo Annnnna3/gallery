@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Artist · Art Gallery QA</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">A</span> Art Gallery QA</a>
+    <nav class="nav"><a href="/">Home</a><a href="/api-docs">API</a></nav>
+</header>
+<main class="container">
+    <section id="artist-detail" class="detail-hero"><div class="empty">Loading artist…</div></section>
+    <section class="section">
+        <div class="section-heading"><div><p class="eyebrow">Works</p><h2>Paintings in collection</h2></div><p id="works-count"></p></div>
+        <div id="works-grid" class="painting-grid"></div>
+    </section>
+</main>
+<script>
+const params = new URLSearchParams(location.search);
+const id = params.get('id');
+
+async function load() {
+    const artistResponse = await fetch(`/api/artists/${id}`);
+    if (!artistResponse.ok) {
+        document.getElementById('artist-detail').innerHTML = `<div class="empty">Artist not found.</div>`;
+        return;
+    }
+    const artist = await artistResponse.json();
+    const works = await (await fetch(`/api/artists/${id}/paintings`)).json();
+
+    document.title = `${artist.name} · Art Gallery QA`;
+    document.getElementById('artist-detail').innerHTML = `
+        <img class="detail-image" src="${artist.portrait}" alt="Portrait illustration of ${artist.name}">
+        <div class="detail-copy">
+            <p class="eyebrow">${artist.movement}</p>
+            <h1>${artist.name}</h1>
+            <div class="fact-grid">
+                <div class="fact"><span>Life</span><strong>${artist.birthYear}–${artist.deathYear ?? 'present'}</strong></div>
+                <div class="fact"><span>Country</span><strong>${artist.country}</strong></div>
+            </div>
+            <p class="description">${artist.description}</p>
+            <a class="back-link" href="/">← Back to gallery</a>
+        </div>`;
+
+    document.getElementById('works-count').textContent = `${works.length + 1} works`;
+
+    document.getElementById('works-grid').innerHTML = works.map(p => `
+        <a class="painting-card" href="/painting?id=${p.id}">
+            <img src="${p.image}" alt="Illustration for ${p.title}">
+            <div class="painting-card-body">
+                <h3>${p.title}</h3>
+                <div class="painting-card-row"><span>${p.genre}</span><strong>${p.year}</strong></div>
+            </div>
+        </a>`).join('');
+}
+load().catch(console.error);
+</script>
+</body>
+</html>

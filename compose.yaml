@@ -1,0 +1,5 @@
+services:
+  art-gallery-qa:
+    build: .
+    ports:
+      - "8080:8080"
